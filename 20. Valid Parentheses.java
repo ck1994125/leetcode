@@ -8,8 +8,7 @@ The brackets must close in the correct order, "()" and "()[]{}" are all valid bu
 
 分析：
     时间复杂度：O(n)
-    链表操作，注意第一次时，链表头会变化，所以需要改变头。
-    可以在头结点前新建一个节点，则首次操作时不需要改变头结点，返回新节点的下一节点即可。
+    栈操作
 */
 class Solution {
     public boolean isValid(String s) {
