@@ -39,12 +39,11 @@ class Solution {
         }
         TreeNode left = root.left;
         TreeNode right = root.right;
-
-        root.left = null;
-
+             
         flatten(left);
         flatten(right);
-
+             
+        root.left = null;
         root.right = left;
         TreeNode cur = root;
         while (cur.right != null) {
