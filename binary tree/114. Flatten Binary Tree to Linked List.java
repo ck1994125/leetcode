@@ -31,44 +31,61 @@ The flattened tree should look like:
     空间复杂度：O(n)
     DFS.
 */
-//DFS
-class Solution {
+// Version 1: Traverse
+public class Solution {
+    private TreeNode lastNode = null;
+
     public void flatten(TreeNode root) {
         if (root == null) {
             return;
         }
-        TreeNode left = root.left;
-        TreeNode right = root.right;
-             
-        flatten(left);
-        flatten(right);
-             
-        root.left = null;
-        root.right = left;
-        TreeNode cur = root;
-        while (cur.right != null) {
-            cur = cur.right;
+
+        if (lastNode != null) {
+            lastNode.left = null;
+            lastNode.right = root;
         }
 
-        cur.right = right;
-        return;
+        lastNode = root;
+        TreeNode right = root.right;
+        flatten(root.left);
+        flatten(right);
     }
 }
 
-//更简单的DFS
-class Solution {
+// version 2: Divide & Conquer
+public class Solution {
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
     public void flatten(TreeNode root) {
-        flatten(root,null);
+        helper(root);
     }
-    private TreeNode flatten(TreeNode root, TreeNode pre) {
-        if(root == null) {
-            return pre;
+    
+    // flatten root and return the last node
+    private TreeNode helper(TreeNode root) {
+        if (root == null) {
+            return null;
         }
-        pre = flatten(root.right, pre);
-        pre = flatten(root.left, pre);
-        root.right = pre;
-        root.left = null;
-        pre = root;
-        return pre;
+        
+        TreeNode leftLast = helper(root.left);
+        TreeNode rightLast = helper(root.right);
+        
+        // connect leftLast to root.right
+        if (leftLast != null) {
+            leftLast.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+        
+        if (rightLast != null) {
+            return rightLast;
+        }
+        
+        if (leftLast != null) {
+            return leftLast;
+        }
+        
+        return root;
     }
 }
